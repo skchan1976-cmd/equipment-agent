@@ -23,11 +23,16 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
     *   A recommendation engine with equipment lists based on real-world examples from **www.teesin.com.sg**.
     *   A display area for the agent's recommendations, including a source link.
     *   **Image-Based Recommendations:** The recommended equipment is now displayed in a grid of cards, with each card showing a picture of the equipment and its name.
-    *   **Specific Models and Real Images:** The recommendations now feature specific equipment models and their corresponding images, scraped directly from the Teesin website.
+    *   **Specific Models and Real Images:** The recommendations now feature specific equipment models and their corresponding images, which are stored locally in the `images` directory.
 
 ## Plan for Current Request
 
 1.  **Update `main.js`**:
     *   Replaced the placeholder recommendation data with real data scraped from `www.teesin.com.sg`. This includes specific model names and direct image URLs for each piece of equipment.
-2.  **Update `blueprint.md`**:
-    *   Updated the project documentation to describe the new feature of using real data for recommendations.
+2.  **Download and Store Images Locally**:
+    *   Created an `images` directory to store all the equipment images.
+    *   Downloaded each image from the Teesin website and saved it to the `images` directory.
+3.  **Update `main.js` to Use Local Images**:
+    *   Modified the `main.js` file to reference the locally stored images in the `images` directory instead of hotlinking from the Teesin website. This improves performance and reliability.
+4.  **Update `blueprint.md`**:
+    *   Updated the project documentation to describe the new feature of using real data and locally stored images for recommendations.

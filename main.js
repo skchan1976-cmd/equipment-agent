@@ -147,81 +147,81 @@ class RecommendationAgent extends HTMLElement {
             floor_surface_preparation: {
                 small: {
                     indoor: [
-                        { name: 'Floor Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
-                        { name: 'Hand Grinder', image: 'https://media.gettyimages.com/id/1191399384/photo/worker-polishing-concrete-floor.jpg?s=612x612&w=0&k=20&c=zGQSJB05m3oylaA3ea1I2Im_jJgW2252a9i_Tf3tmus=' }
+                        { name: 'Floor Scraper', image: 'images/floor_scraper.jpg' },
+                        { name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Floor Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
-                        { name: 'Hand Grinder', image: 'https://media.gettyimages.com/id/1191399384/photo/worker-polishing-concrete-floor.jpg?s=612x612&w=0&k=20&c=zGQSJB05m3oylaA3ea1I2Im_jJgW2252a9i_Tf3tmus=' }
+                        { name: 'Floor Scraper', image: 'images/floor_scraper.jpg' },
+                        { name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }
                     ]
                 },
                 medium: {
                      indoor: [
-                        { name: 'Floor Grinder', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' },
-                        { name: 'Shot Blaster', image: 'https://media.gettyimages.com/id/1343232149/photo/shot-blasting-machine-for-concrete-floor-preparation.jpg?s=612x612&w=0&k=20&c=G_T0eanbQg7z3E13h5JStMh2DNILp_s-j3v-x5g-1O8=' },
-                        { name: 'Dust Collector', image: 'https://media.gettyimages.com/id/1310419341/photo/vacuum-cleaner-on-a-constuction-site.jpg?s=612x612&w=0&k=20&c=nCS4t5yudqlyIGt5E0D55IVg-xLzBOq2n-i4h40_uUk=' }
+                        { name: 'Floor Grinder', image: 'images/floor_grinder.jpg' },
+                        { name: 'Shot Blaster', image: 'images/shot_blaster.jpg' },
+                        { name: 'Dust Collector', image: 'images/dust_collector.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Floor Grinder', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' },
-                        { name: 'Shot Blaster', image: 'https://media.gettyimages.com/id/1343232149/photo/shot-blasting-machine-for-concrete-floor-preparation.jpg?s=612x612&w=0&k=20&c=G_T0eanbQg7z3E13h5JStMh2DNILp_s-j3v-x5g-1O8=' }
+                        { name: 'Floor Grinder', image: 'images/floor_grinder.jpg' },
+                        { name: 'Shot Blaster', image: 'images/shot_blaster.jpg' }
                     ]
                 },
                 large: {
                     indoor: [
-                        { name: 'Ride-on Floor Grinder', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' },
-                        { name: 'Ride-on Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
-                        { name: 'Large Dust Collector', image: 'https://media.gettyimages.com/id/1406323145/photo/man-sanding-a-wooden-floor.jpg?s=612x612&w=0&k=20&c=NlH0k7e53R9DmXbC2-z4aQXMx-II65c8Xn8n1ko09qY=' }
+                        { name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' },
+                        { name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' },
+                        { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Ride-on Floor Grinder', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' },
-                        { name: 'Ride-on Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' }
+                        { name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' },
+                        { name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }
                     ]
                 }
             },
             demolition: {
                 small: {
                     indoor: [
-                        { name: 'Electric Breaker', image: 'https://media.gettyimages.com/id/1297587428/photo/construction-worker-using-a-jackhammer.jpg?s=612x612&w=0&k=20&c=L_1uv2Ekb32VQP35j4-EVJiN-Xb5c2s_4Kdfg82iNqg=' }
+                        { name: 'Electric Breaker', image: 'images/electric_breaker.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Concrete Saw', image: 'https://media.gettyimages.com/id/184947983/photo/a-construction-worker-cutting-a-seam-in-a-concrete-driveway.jpg?s=612x612&w=0&k=20&c=9y-OrCI-2ZESZ-PqAMB3j8E4N8y-iKUSfNl22e83XfU=' }
+                        { name: 'Concrete Saw', image: 'images/concrete_saw.jpg' }
                     ]
                 },
                 medium: {
                     indoor: [
-                         { name: 'Demolition Robot', image: 'https://media.gettyimages.com/id/1368487959/photo/robotic-demolition-tool.jpg?s=612x612&w=0&k=20&c=N58-mN6M_f5Ua2h2ccg7j-8_vDDBJ-n22yl-eGvS_iI=' }
+                         { name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Mini Excavator', image: 'https://media.gettyimages.com/id/483570621/photo/mini-excavator-on-a-construction-site.jpg?s=612x612&w=0&k=20&c=t1yvj_1k4f3R2Iq7-v4H-t_t_D7Qj-D8GgJgYf_w_zE=' },
-                        { name: 'Skid-Steer Loader', image: 'https://media.gettyimages.com/id/175551989/photo/skid-steer-loader.jpg?s=612x612&w=0&k=20&c=h_EaB2oB-d_wO3Kj-A_Kz_l-z_Qj-D8GgJgYf_w_zE=' }
+                        { name: 'Mini Excavator', image: 'images/mini_excavator.jpg' },
+                        { name: 'Skid-Steer Loader', image: 'images/skid_steer_loader.jpg' }
                     ]
                 },
                 large: {
                      indoor: [
-                        { name: 'Demolition Robot', image: 'https://media.gettyimages.com/id/1368487959/photo/robotic-demolition-tool.jpg?s=612x612&w=0&k=20&c=N58-mN6M_f5Ua2h2ccg7j-8_vDDBJ-n22yl-eGvS_iI=' }
+                        { name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }
                     ],
                     outdoor: [
-                        { name: 'Mini Excavator', image: 'https://media.gettyimages.com/id/483570621/photo/mini-excavator-on-a-construction-site.jpg?s=612x612&w=0&k=20&c=t1yvj_1k4f3R2Iq7-v4H-t_t_D7Qj-D8GgJgYf_w_zE=' }
+                        { name: 'Mini Excavator', image: 'images/mini_excavator.jpg' }
                     ]
                 }
             },
             floor_polishing: {
                 small: {
                     indoor: [
-                        { name: 'Hand Polisher', image: 'https://media.gettyimages.com/id/1297127980/photo/a-construction-worker-polishing-a-concrete-floor.jpg?s=612x612&w=0&k=20&c=Wf-s-u_y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
-                        { name: 'Burnisher', image: 'https://media.gettyimages.com/id/157341353/photo/a-man-using-a-floor-buffer.jpg?s=612x612&w=0&k=20&c=Q8-Z_y_z_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' }
+                        { name: 'Hand Polisher', image: 'images/hand_polisher.jpg' },
+                        { name: 'Burnisher', image: 'images/burnisher.jpg' }
                     ],
                     outdoor: []
                 },
                 medium: {
                     indoor: [
-                        { name: 'Floor Polisher', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' }
+                        { name: 'Floor Polisher', image: 'images/floor_polisher.jpg' }
                     ],
                     outdoor: []
                 },
                 large: {
                     indoor: [
-                        { name: 'Ride-on Floor Polisher', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                        { name: 'Ride-on Floor Polisher', image: 'images/ride_on_floor_polisher.jpg' }
                     ],
                     outdoor: []
                 }
@@ -229,22 +229,22 @@ class RecommendationAgent extends HTMLElement {
             material_conveying: {
                 small: {
                     indoor: [
-                        { name: 'Portable Conveyor Belt', image: 'https://media.gettyimages.com/id/1205423634/photo/conveyor-belt-at-a-construction-site.jpg?s=612x612&w=0&k=20&c=p_l_O-Y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
+                        { name: 'Portable Conveyor Belt', image: 'images/portable_conveyor_belt.jpg' },
                     ],
                     outdoor: [
-                        { name: 'Portable Conveyor Belt', image: 'https://media.gettyimages.com/id/1205423634/photo/conveyor-belt-at-a-construction-site.jpg?s=612x612&w=0&k=20&c=p_l_O-Y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
+                        { name: 'Portable Conveyor Belt', image: 'images/portable_conveyor_belt.jpg' },
                     ]
                 },
                 medium: {
                     indoor: [],
                     outdoor: [
-                        { name: 'Construction Dumper', image: 'https://media.gettyimages.com/id/173595443/photo/dumper-truck-on-a-building-site.jpg?s=612x612&w=0&k=20&c=S_L_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' },
+                        { name: 'Construction Dumper', image: 'images/construction_dumper.jpg' },
                     ]
                 },
                 large: {
                     indoor: [],
                     outdoor: [
-                        { name: 'Telehandler', image: 'https://media.gettyimages.com/id/182820127/photo/a-telehandler-forklift-in-a-construction-site.jpg?s=612x612&w=0&k=20&c=s_j_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' },
+                        { name: 'Telehandler', image: 'images/telehandler.jpg' },
                     ]
                 }
             },
@@ -252,19 +252,19 @@ class RecommendationAgent extends HTMLElement {
                 small: {
                     indoor: [],
                     outdoor: [
-                        { name: 'Power Trowel', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                        { name: 'Power Trowel', image: 'images/power_trowel.jpg' }
                     ]
                 },
                 medium: {
                     indoor: [],
                     outdoor: [
-                        { name: 'Ride-on Power Trowel', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                        { name: 'Ride-on Power Trowel', image: 'images/ride_on_power_trowel.jpg' }
                     ]
                 },
                 large: {
                     indoor: [],
                     outdoor: [
-                        { name: 'Laser Screed', image: 'https://media.gettyimages.com/id/1152019401/photo/concrete-screed-and-finishing-the-floor.jpg?s=612x612&w=0&k=20&c=7_V-B-J_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' }
+                        { name: 'Laser Screed', image: 'images/laser_screed.jpg' }
                     ]
                 }
             }
