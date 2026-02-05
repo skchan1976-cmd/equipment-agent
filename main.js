@@ -88,19 +88,6 @@ class RecommendationAgent extends HTMLElement {
                     border-radius: 6px;
                     margin-bottom: 0.5rem;
                 }
-                .source-link {
-                    margin-top: 1rem; 
-                    font-size: 0.9rem; 
-                    text-align: center;
-                    color: #6c757d;
-                }
-                .source-link a {
-                    color: var(--primary-color);
-                    text-decoration: none;
-                }
-                .source-link a:hover {
-                    text-decoration: underline;
-                }
             </style>
             <div class="agent-container">
                 <form id="project-form">
@@ -115,6 +102,13 @@ class RecommendationAgent extends HTMLElement {
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="project-location">Project Location</label>
+                        <select id="project-location" name="project-location">
+                            <option value="indoor">Indoor</option>
+                            <option value="outdoor">Outdoor</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="project-area">Project Area (in square meters)</label>
                         <input type="number" id="project-area" name="project-area" placeholder="e.g., 50" required>
                     </div>
@@ -123,9 +117,6 @@ class RecommendationAgent extends HTMLElement {
                 <div id="recommendations" class="recommendations" style="display: none;">
                     <h3>Recommended Equipment</h3>
                     <ul id="equipment-list"></ul>
-                    <p class="source-link">
-                        For more information on equipment, visit <a href="https://www.teesin.com.sg" target="_blank">www.teesin.com.sg</a>.
-                    </p>
                 </div>
             </div>
         `;
@@ -133,9 +124,10 @@ class RecommendationAgent extends HTMLElement {
         this.shadowRoot.getElementById('project-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const projectType = this.shadowRoot.getElementById('project-type').value;
+            const projectLocation = this.shadowRoot.getElementById('project-location').value;
             const projectArea = this.shadowRoot.getElementById('project-area').value;
             const projectScale = this.getScaleFromArea(projectArea);
-            const recommendations = this.getRecommendations(projectType, projectScale);
+            const recommendations = this.getRecommendations(projectType, projectScale, projectLocation);
             this.displayRecommendations(recommendations);
         });
     }
@@ -150,73 +142,134 @@ class RecommendationAgent extends HTMLElement {
         }
     }
 
-    getRecommendations(type, scale) {
+    getRecommendations(type, scale, location) {
         const recommendations = {
             floor_surface_preparation: {
-                small: [
-                    { name: 'Blastrac BS-50 Floor Scraper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BS-50-1.jpg' },
-                    { name: 'Metabo RFEV 19-125 RT Hand Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2023/10/METABO-RFEV-19-125-RT.jpg' }
-                ],
-                medium: [
-                    { name: 'Blastrac BGS-250 Floor Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BGS-250-MKII-1.jpg' },
-                    { name: 'Blastrac 1-8DM Shot Blaster', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/1-8DM-1.jpg' },
-                    { name: 'Blastrac BDC-122 Dust Collector', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-122-1.jpg' }
-                ],
-                large: [
-                    { name: 'Blastrac BMG-780PRO Floor Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMG-780PRO-MKII-1.jpg' },
-                    { name: 'Blastrac BMS-220ADB Ride-on Scraper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMS-220ADB-1.jpg' },
-                    { name: 'Blastrac BDC-3140LP Dust Collector', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-3140-1.jpg' }
-                ]
+                small: {
+                    indoor: [
+                        { name: 'Floor Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
+                        { name: 'Hand Grinder', image: 'https://media.gettyimages.com/id/1191399384/photo/worker-polishing-concrete-floor.jpg?s=612x612&w=0&k=20&c=zGQSJB05m3oylaA3ea1I2Im_jJgW2252a9i_Tf3tmus=' }
+                    ],
+                    outdoor: [
+                        { name: 'Floor Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
+                        { name: 'Hand Grinder', image: 'https://media.gettyimages.com/id/1191399384/photo/worker-polishing-concrete-floor.jpg?s=612x612&w=0&k=20&c=zGQSJB05m3oylaA3ea1I2Im_jJgW2252a9i_Tf3tmus=' }
+                    ]
+                },
+                medium: {
+                     indoor: [
+                        { name: 'Floor Grinder', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' },
+                        { name: 'Shot Blaster', image: 'https://media.gettyimages.com/id/1343232149/photo/shot-blasting-machine-for-concrete-floor-preparation.jpg?s=612x612&w=0&k=20&c=G_T0eanbQg7z3E13h5JStMh2DNILp_s-j3v-x5g-1O8=' },
+                        { name: 'Dust Collector', image: 'https://media.gettyimages.com/id/1310419341/photo/vacuum-cleaner-on-a-constuction-site.jpg?s=612x612&w=0&k=20&c=nCS4t5yudqlyIGt5E0D55IVg-xLzBOq2n-i4h40_uUk=' }
+                    ],
+                    outdoor: [
+                        { name: 'Floor Grinder', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' },
+                        { name: 'Shot Blaster', image: 'https://media.gettyimages.com/id/1343232149/photo/shot-blasting-machine-for-concrete-floor-preparation.jpg?s=612x612&w=0&k=20&c=G_T0eanbQg7z3E13h5JStMh2DNILp_s-j3v-x5g-1O8=' }
+                    ]
+                },
+                large: {
+                    indoor: [
+                        { name: 'Ride-on Floor Grinder', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' },
+                        { name: 'Ride-on Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' },
+                        { name: 'Large Dust Collector', image: 'https://media.gettyimages.com/id/1406323145/photo/man-sanding-a-wooden-floor.jpg?s=612x612&w=0&k=20&c=NlH0k7e53R9DmXbC2-z4aQXMx-II65c8Xn8n1ko09qY=' }
+                    ],
+                    outdoor: [
+                        { name: 'Ride-on Floor Grinder', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' },
+                        { name: 'Ride-on Scraper', image: 'https://media.gettyimages.com/id/1312157523/photo/construction-worker-use-a-power-tool-to-remove-old-vinyl-tiles-from-a-subfloor.jpg?s=612x612&w=0&k=20&c=6I43hKz4CCi__53fB3tYV_4aXfNAiX-Jv74AWkX3b2M=' }
+                    ]
+                }
             },
             demolition: {
-                small: [
-                    { name: 'Hilti TE 1000-AVR Electric Breaker', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/11/TE-1000-AVR-03.jpg' },
-                    { name: 'Hilti DCH 300 Concrete Saw', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/11/DCH-300-02.jpg' }
-                ],
-                medium: [
-                    { name: 'Bobcat E17z Mini Excavator', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/E17z.jpeg' },
-                    { name: 'Bobcat S70 Skid-Steer Loader', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/S70.jpeg' }
-                ],
-                large: [
-                    { name: 'Brokk 110 Demolition Robot', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/Brokk-110-1.jpg' }
-                ]
+                small: {
+                    indoor: [
+                        { name: 'Electric Breaker', image: 'https://media.gettyimages.com/id/1297587428/photo/construction-worker-using-a-jackhammer.jpg?s=612x612&w=0&k=20&c=L_1uv2Ekb32VQP35j4-EVJiN-Xb5c2s_4Kdfg82iNqg=' }
+                    ],
+                    outdoor: [
+                        { name: 'Concrete Saw', image: 'https://media.gettyimages.com/id/184947983/photo/a-construction-worker-cutting-a-seam-in-a-concrete-driveway.jpg?s=612x612&w=0&k=20&c=9y-OrCI-2ZESZ-PqAMB3j8E4N8y-iKUSfNl22e83XfU=' }
+                    ]
+                },
+                medium: {
+                    indoor: [
+                         { name: 'Demolition Robot', image: 'https://media.gettyimages.com/id/1368487959/photo/robotic-demolition-tool.jpg?s=612x612&w=0&k=20&c=N58-mN6M_f5Ua2h2ccg7j-8_vDDBJ-n22yl-eGvS_iI=' }
+                    ],
+                    outdoor: [
+                        { name: 'Mini Excavator', image: 'https://media.gettyimages.com/id/483570621/photo/mini-excavator-on-a-construction-site.jpg?s=612x612&w=0&k=20&c=t1yvj_1k4f3R2Iq7-v4H-t_t_D7Qj-D8GgJgYf_w_zE=' },
+                        { name: 'Skid-Steer Loader', image: 'https://media.gettyimages.com/id/175551989/photo/skid-steer-loader.jpg?s=612x612&w=0&k=20&c=h_EaB2oB-d_wO3Kj-A_Kz_l-z_Qj-D8GgJgYf_w_zE=' }
+                    ]
+                },
+                large: {
+                     indoor: [
+                        { name: 'Demolition Robot', image: 'https://media.gettyimages.com/id/1368487959/photo/robotic-demolition-tool.jpg?s=612x612&w=0&k=20&c=N58-mN6M_f5Ua2h2ccg7j-8_vDDBJ-n22yl-eGvS_iI=' }
+                    ],
+                    outdoor: [
+                        { name: 'Mini Excavator', image: 'https://media.gettyimages.com/id/483570621/photo/mini-excavator-on-a-construction-site.jpg?s=612x612&w=0&k=20&c=t1yvj_1k4f3R2Iq7-v4H-t_t_D7Qj-D8GgJgYf_w_zE=' }
+                    ]
+                }
             },
             floor_polishing: {
-                small: [
-                    { name: 'HTC Greyline 270 Hand Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/HTC-Greyline-270-1.jpg' },
-                    { name: 'Blastrac BDC-1112EU Burnisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-1112EU-e1629433698711.jpg' }
-                ],
-                medium: [
-                    { name: 'HTC Greyline 450 Floor Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/HTC-Greyline-450-1.jpg' }
-                ],
-                large: [
-                    { name: 'Blastrac BMG-2200 Ride-on Floor Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMG-2200-1.jpg' }
-                ]
+                small: {
+                    indoor: [
+                        { name: 'Hand Polisher', image: 'https://media.gettyimages.com/id/1297127980/photo/a-construction-worker-polishing-a-concrete-floor.jpg?s=612x612&w=0&k=20&c=Wf-s-u_y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
+                        { name: 'Burnisher', image: 'https://media.gettyimages.com/id/157341353/photo/a-man-using-a-floor-buffer.jpg?s=612x612&w=0&k=20&c=Q8-Z_y_z_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' }
+                    ],
+                    outdoor: []
+                },
+                medium: {
+                    indoor: [
+                        { name: 'Floor Polisher', image: 'https://media.gettyimages.com/id/1151934989/photo/concrete-polishing-and-grinding-on-the-floor.jpg?s=612x612&w=0&k=20&c=V-dY2YN5nBDgZg6-md9y3JmgtX4hGYSjR-61c3GKWkI=' }
+                    ],
+                    outdoor: []
+                },
+                large: {
+                    indoor: [
+                        { name: 'Ride-on Floor Polisher', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                    ],
+                    outdoor: []
+                }
             },
             material_conveying: {
-                small: [
-                    { name: 'Shifta Conveyor Belt', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/01/Shifta-Conveyor-4.4m-5.4m.jpg' },
-                ],
-                medium: [
-                    { name: 'Thwaites 1-Ton Dumper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/10/1-Ton-Dumper-Hi-Tip-2021-Side-view.jpg' },
-                ],
-                large: [
-                    { name: 'Bobcat T40.180SLP Telehandler', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/T40.180SLP.jpeg' },
-                ]
+                small: {
+                    indoor: [
+                        { name: 'Portable Conveyor Belt', image: 'https://media.gettyimages.com/id/1205423634/photo/conveyor-belt-at-a-construction-site.jpg?s=612x612&w=0&k=20&c=p_l_O-Y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
+                    ],
+                    outdoor: [
+                        { name: 'Portable Conveyor Belt', image: 'https://media.gettyimages.com/id/1205423634/photo/conveyor-belt-at-a-construction-site.jpg?s=612x612&w=0&k=20&c=p_l_O-Y_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c=' },
+                    ]
+                },
+                medium: {
+                    indoor: [],
+                    outdoor: [
+                        { name: 'Construction Dumper', image: 'https://media.gettyimages.com/id/173595443/photo/dumper-truck-on-a-building-site.jpg?s=612x612&w=0&k=20&c=S_L_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' },
+                    ]
+                },
+                large: {
+                    indoor: [],
+                    outdoor: [
+                        { name: 'Telehandler', image: 'https://media.gettyimages.com/id/182820127/photo/a-telehandler-forklift-in-a-construction-site.jpg?s=612x612&w=0&k=20&c=s_j_8-f_yJ_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' },
+                    ]
+                }
             },
             float_and_levelling: {
-                small: [
-                    { name: 'Bartell B424 Power Trowel', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/B424-1.jpg' }
-                ],
-                medium: [
-                    { name: 'Bartell BR-100 Ride-on Power Trowel', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BR100-1.jpg' }
-                ],
-                large: [
-                    { name: 'Somero S-485 Laser Screed', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/S-485-1.jpg' }
-                ]
+                small: {
+                    indoor: [],
+                    outdoor: [
+                        { name: 'Power Trowel', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                    ]
+                },
+                medium: {
+                    indoor: [],
+                    outdoor: [
+                        { name: 'Ride-on Power Trowel', image: 'https://media.gettyimages.com/id/1322207817/photo/a-construction-worker-operating-a-ride-on-power-trowel.jpg?s=612x612&w=0&k=20&c=s-G22C-4I1s-7W2UnuX_3D6-zORn_ANh-gY2_4lVTNE=' }
+                    ]
+                },
+                large: {
+                    indoor: [],
+                    outdoor: [
+                        { name: 'Laser Screed', image: 'https://media.gettyimages.com/id/1152019401/photo/concrete-screed-and-finishing-the-floor.jpg?s=612x612&w=0&k=20&c=7_V-B-J_y_Z-c_8_w-y_8-f_yJ_y_Z-c_8=' }
+                    ]
+                }
             }
         };
-        return recommendations[type][scale] || [];
+        return recommendations[type][scale][location] || [];
     }
 
     displayRecommendations(recommendations) {
@@ -225,7 +278,8 @@ class RecommendationAgent extends HTMLElement {
 
         equipmentList.innerHTML = '';
         if (recommendations.length === 0) {
-            recommendationsDiv.style.display = 'none';
+            recommendationsDiv.style.display = 'block';
+            equipmentList.innerHTML = "No equipment recommendations for this combination. Please contact us for more information.";
             return;
         }
 
