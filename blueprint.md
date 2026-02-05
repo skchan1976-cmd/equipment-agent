@@ -22,12 +22,12 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
         *   **Large:** Over 500 sq. meters.
     *   A recommendation engine with equipment lists based on real-world examples from **www.teesin.com.sg**.
     *   A display area for the agent's recommendations, including a source link.
+    *   **Image-Based Recommendations:** The recommended equipment is now displayed in a grid of cards, with each card showing a picture of the equipment and its name.
+    *   **Specific Models and Real Images:** The recommendations now feature specific equipment models and their corresponding images, scraped directly from the Teesin website.
 
 ## Plan for Current Request
 
-1.  **Update `index.html`**:
-    *   Added an `<img>` tag to the header for the Teesin logo.
-2.  **Update `style.css`**:
-    *   Added styles to display the logo and align it with the header title.
-3.  **Update `blueprint.md`**:
-    *   Updated the project documentation to include the addition of the header logo.
+1.  **Update `main.js`**:
+    *   Replaced the placeholder recommendation data with real data scraped from `www.teesin.com.sg`. This includes specific model names and direct image URLs for each piece of equipment.
+2.  **Update `blueprint.md`**:
+    *   Updated the project documentation to describe the new feature of using real data for recommendations.

@@ -1,3 +1,13 @@
+
+const themeSwitcher = document.getElementById('checkbox');
+
+themeSwitcher.addEventListener('change', () => {
+    if (themeSwitcher.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+});
 class RecommendationAgent extends HTMLElement {
     constructor() {
         super();
@@ -55,15 +65,27 @@ class RecommendationAgent extends HTMLElement {
                     color: var(--primary-color);
                 }
 
-                ul {
+                #equipment-list {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                    gap: 1.5rem;
                     list-style-type: none;
                     padding: 0;
                 }
 
-                li {
+                .equipment-card {
                     background-color: #f0f0f0;
-                    padding: 0.8rem;
-                    border-radius: 4px;
+                    border-radius: 8px;
+                    padding: 1rem;
+                    text-align: center;
+                    box-shadow: 0 4px 6px var(--shadow-color);
+                }
+
+                .equipment-card img {
+                    max-width: 100%;
+                    height: 150px;
+                    object-fit: cover;
+                    border-radius: 6px;
                     margin-bottom: 0.5rem;
                 }
                 .source-link {
@@ -102,7 +124,7 @@ class RecommendationAgent extends HTMLElement {
                     <h3>Recommended Equipment</h3>
                     <ul id="equipment-list"></ul>
                     <p class="source-link">
-                        For more information on equipment, visit <a href="http://www.teesin.com.sg" target="_blank">www.teesin.com.sg</a>.
+                        For more information on equipment, visit <a href="https://www.teesin.com.sg" target="_blank">www.teesin.com.sg</a>.
                     </p>
                 </div>
             </div>
@@ -131,32 +153,70 @@ class RecommendationAgent extends HTMLElement {
     getRecommendations(type, scale) {
         const recommendations = {
             floor_surface_preparation: {
-                small: ['Floor Scraper', 'Hand Grinder'],
-                medium: ['Floor Grinder (Single Head)', 'Shot Blaster', 'Dust Collector'],
-                large: ['Floor Grinder (Planetary)', 'Ride-on Scraper', 'Large Dust Collector']
+                small: [
+                    { name: 'Blastrac BS-50 Floor Scraper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BS-50-1.jpg' },
+                    { name: 'Metabo RFEV 19-125 RT Hand Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2023/10/METABO-RFEV-19-125-RT.jpg' }
+                ],
+                medium: [
+                    { name: 'Blastrac BGS-250 Floor Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BGS-250-MKII-1.jpg' },
+                    { name: 'Blastrac 1-8DM Shot Blaster', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/1-8DM-1.jpg' },
+                    { name: 'Blastrac BDC-122 Dust Collector', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-122-1.jpg' }
+                ],
+                large: [
+                    { name: 'Blastrac BMG-780PRO Floor Grinder', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMG-780PRO-MKII-1.jpg' },
+                    { name: 'Blastrac BMS-220ADB Ride-on Scraper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMS-220ADB-1.jpg' },
+                    { name: 'Blastrac BDC-3140LP Dust Collector', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-3140-1.jpg' }
+                ]
             },
             demolition: {
-                small: ['Electric Breaker (Jackhammer)', 'Handheld Concrete Saw', 'Personal Protective Equipment (PPE)'],
-                medium: ['1.7-Ton Mini Excavator with Hydraulic Breaker', 'Skid-Steer Loader with Demolition Grapple', 'Air Compressor'],
-                large: ['20-Ton Excavator with Hydraulic Breaker & Crusher', 'Remote-Controlled Demolition Robot', 'Water Spray System for Dust Control']
+                small: [
+                    { name: 'Hilti TE 1000-AVR Electric Breaker', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/11/TE-1000-AVR-03.jpg' },
+                    { name: 'Hilti DCH 300 Concrete Saw', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/11/DCH-300-02.jpg' }
+                ],
+                medium: [
+                    { name: 'Bobcat E17z Mini Excavator', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/E17z.jpeg' },
+                    { name: 'Bobcat S70 Skid-Steer Loader', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/S70.jpeg' }
+                ],
+                large: [
+                    { name: 'Brokk 110 Demolition Robot', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/Brokk-110-1.jpg' }
+                ]
             },
             floor_polishing: {
-                small: ['Hand Polisher', 'Burnisher'],
-                medium: ['Walk-behind Floor Polisher', 'Diamond Pads', 'Industrial Vacuum'],
-                large: ['Ride-on Floor Polisher', 'Large Burnisher', 'Auto Scrubber']
+                small: [
+                    { name: 'HTC Greyline 270 Hand Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/HTC-Greyline-270-1.jpg' },
+                    { name: 'Blastrac BDC-1112EU Burnisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BDC-1112EU-e1629433698711.jpg' }
+                ],
+                medium: [
+                    { name: 'HTC Greyline 450 Floor Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/HTC-Greyline-450-1.jpg' }
+                ],
+                large: [
+                    { name: 'Blastrac BMG-2200 Ride-on Floor Polisher', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BMG-2200-1.jpg' }
+                ]
             },
             material_conveying: {
-                small: ['Wheelbarrow', 'Material Hoist'],
-                medium: ['Conveyor Belt', 'Skid-Steer Loader', 'Mini Dumper'],
-                large: ['Telehandler', 'Crane', 'Dump Truck']
+                small: [
+                    { name: 'Shifta Conveyor Belt', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/01/Shifta-Conveyor-4.4m-5.4m.jpg' },
+                ],
+                medium: [
+                    { name: 'Thwaites 1-Ton Dumper', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/10/1-Ton-Dumper-Hi-Tip-2021-Side-view.jpg' },
+                ],
+                large: [
+                    { name: 'Bobcat T40.180SLP Telehandler', image: 'https://www.teesin.com.sg/wp-content/uploads/2022/04/T40.180SLP.jpeg' },
+                ]
             },
             float_and_levelling: {
-                small: ['Hand Float', 'Power Trowel (Walk-behind)'],
-                medium: ['Laser Screed', 'Ride-on Power Trowel'],
-                large: ['Large Ride-on Power Trowel', 'Concrete Laser Screed']
+                small: [
+                    { name: 'Bartell B424 Power Trowel', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/B424-1.jpg' }
+                ],
+                medium: [
+                    { name: 'Bartell BR-100 Ride-on Power Trowel', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/BR100-1.jpg' }
+                ],
+                large: [
+                    { name: 'Somero S-485 Laser Screed', image: 'https://www.teesin.com.sg/wp-content/uploads/2021/08/S-485-1.jpg' }
+                ]
             }
         };
-        return recommendations[type][scale] || ['No specific recommendations for this combination.'];
+        return recommendations[type][scale] || [];
     }
 
     displayRecommendations(recommendations) {
@@ -164,9 +224,24 @@ class RecommendationAgent extends HTMLElement {
         const equipmentList = this.shadowRoot.getElementById('equipment-list');
 
         equipmentList.innerHTML = '';
+        if (recommendations.length === 0) {
+            recommendationsDiv.style.display = 'none';
+            return;
+        }
+
         recommendations.forEach(item => {
             const li = document.createElement('li');
-            li.textContent = item;
+            li.classList.add('equipment-card');
+            
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.name;
+
+            const name = document.createElement('p');
+            name.textContent = item.name;
+
+            li.appendChild(img);
+            li.appendChild(name);
             equipmentList.appendChild(li);
         });
 
