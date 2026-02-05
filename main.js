@@ -1,13 +1,3 @@
-
-const themeSwitcher = document.getElementById('checkbox');
-
-themeSwitcher.addEventListener('change', () => {
-    if (themeSwitcher.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-    }
-});
 class RecommendationAgent extends HTMLElement {
     constructor() {
         super();
@@ -94,12 +84,17 @@ class RecommendationAgent extends HTMLElement {
                     <div class="form-group">
                         <label for="project-type">Project Type</label>
                         <select id="project-type" name="project-type">
-                            <option value="floor_surface_preparation">Floor Surface Preparation</option>
+                            <option value="">-- Select Project Type --</option>
+                            <option value="surface_preparation">Surface Preparation</option>
                             <option value="demolition">Demolition</option>
                             <option value="floor_polishing">Floor Polishing</option>
                             <option value="material_conveying">Material Conveying</option>
                             <option value="float_and_levelling">Float and Levelling</option>
                         </select>
+                    </div>
+                    <div class="form-group" id="sub-category-group" style="display: none;">
+                        <label for="sub-category">Sub-Category</label>
+                        <select id="sub-category" name="sub-category"></select>
                     </div>
                     <div class="form-group">
                         <label for="project-location">Project Location</label>
@@ -121,13 +116,67 @@ class RecommendationAgent extends HTMLElement {
             </div>
         `;
 
+        this.subCategories = {
+            demolition: [
+                { value: 'controlled', text: 'Controlled Demolition' },
+                { value: 'destructive', text: 'Destructive Demolition' },
+                { value: 'demolish_wall', text: 'Demolish Wall' },
+                { value: 'demolish_floor', text: 'Demolish Floor' }
+            ],
+            surface_preparation: [
+                { value: 'grinding', text: 'Grinding & Scarifying' },
+                { value: 'stripping', text: 'Coating & Paint Removal' },
+                { value: 'cleaning', text: 'Surface Cleaning & Degreasing' },
+                { value: 'shot_blasting', text: 'Shot Blasting' }
+            ],
+            floor_polishing: [
+                { value: 'concrete', text: 'Concrete Polishing' },
+                { value: 'marble_terrazzo', text: 'Marble/Terrazzo Polishing' },
+                { value: 'wood', text: 'Wood Floor Polishing' }
+            ],
+            material_conveying: [
+                { value: 'horizontal', text: 'Horizontal Material Moving' },
+                { value: 'vertical', text: 'Vertical Material Moving' },
+                { value: 'debris_removal', text: 'Debris & Waste Removal' }
+            ],
+            float_and_levelling: [
+                { value: 'trowelling', text: 'Power Trowelling' },
+                { value: 'screeding', text: 'Screeding & Levelling' },
+                { value: 'self_levelling', text: 'Applying Self-Levelling Compounds' }
+            ]
+        };
+
+        this.shadowRoot.getElementById('project-type').addEventListener('change', (e) => {
+            const projectType = e.target.value;
+            const subCategoryGroup = this.shadowRoot.getElementById('sub-category-group');
+            const subCategorySelect = this.shadowRoot.getElementById('sub-category');
+            
+            // Clear sub-category dropdown and hide it
+            subCategorySelect.innerHTML = '<option value="">-- Select Sub-Category --</option>';
+            const subCategories = this.subCategories[projectType];
+
+            if (subCategories && subCategories.length > 0) {
+                subCategories.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub.value;
+                    option.textContent = sub.text;
+                    subCategorySelect.appendChild(option);
+                });
+                subCategoryGroup.style.display = 'block';
+            } else {
+                subCategoryGroup.style.display = 'none';
+            }
+        });
+
         this.shadowRoot.getElementById('project-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const projectType = this.shadowRoot.getElementById('project-type').value;
+            const subCategorySelect = this.shadowRoot.getElementById('sub-category');
+            const subCategory = subCategorySelect.style.display !== 'none' ? subCategorySelect.value : 'default';
             const projectLocation = this.shadowRoot.getElementById('project-location').value;
             const projectArea = this.shadowRoot.getElementById('project-area').value;
             const projectScale = this.getScaleFromArea(projectArea);
-            const recommendations = this.getRecommendations(projectType, projectScale, projectLocation);
+            const recommendations = this.getRecommendations(projectType, subCategory, projectScale, projectLocation);
             this.displayRecommendations(recommendations);
         });
     }
@@ -142,134 +191,46 @@ class RecommendationAgent extends HTMLElement {
         }
     }
 
-    getRecommendations(type, scale, location) {
+    getRecommendations(type, subType, scale, location) {
         const recommendations = {
-            floor_surface_preparation: {
-                small: {
-                    indoor: [
-                        { name: 'Floor Scraper', image: 'images/floor_scraper.jpg' },
-                        { name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Floor Scraper', image: 'images/floor_scraper.jpg' },
-                        { name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }
-                    ]
-                },
-                medium: {
-                     indoor: [
-                        { name: 'Floor Grinder', image: 'images/floor_grinder.jpg' },
-                        { name: 'Shot Blaster', image: 'images/shot_blaster.jpg' },
-                        { name: 'Dust Collector', image: 'images/dust_collector.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Floor Grinder', image: 'images/floor_grinder.jpg' },
-                        { name: 'Shot Blaster', image: 'images/shot_blaster.jpg' }
-                    ]
-                },
-                large: {
-                    indoor: [
-                        { name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' },
-                        { name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' },
-                        { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' },
-                        { name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }
-                    ]
-                }
+            surface_preparation: {
+                grinding: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                stripping: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                cleaning: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                shot_blasting: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                default: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } }
             },
             demolition: {
-                small: {
-                    indoor: [
-                        { name: 'Electric Breaker', image: 'images/electric_breaker.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Concrete Saw', image: 'images/concrete_saw.jpg' }
-                    ]
-                },
-                medium: {
-                    indoor: [
-                         { name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Mini Excavator', image: 'images/mini_excavator.jpg' },
-                        { name: 'Skid-Steer Loader', image: 'images/skid_steer_loader.jpg' }
-                    ]
-                },
-                large: {
-                     indoor: [
-                        { name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }
-                    ],
-                    outdoor: [
-                        { name: 'Mini Excavator', image: 'images/mini_excavator.jpg' }
-                    ]
-                }
+                controlled: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                destructive: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                demolish_wall: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                demolish_floor: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                default: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } }
             },
             floor_polishing: {
-                small: {
-                    indoor: [
-                        { name: 'Hand Polisher', image: 'images/hand_polisher.jpg' },
-                        { name: 'Burnisher', image: 'images/burnisher.jpg' }
-                    ],
-                    outdoor: []
-                },
-                medium: {
-                    indoor: [
-                        { name: 'Floor Polisher', image: 'images/floor_polisher.jpg' }
-                    ],
-                    outdoor: []
-                },
-                large: {
-                    indoor: [
-                        { name: 'Ride-on Floor Polisher', image: 'images/ride_on_floor_polisher.jpg' }
-                    ],
-                    outdoor: []
-                }
+                concrete: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                marble_terrazzo: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                wood: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                default: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } }
             },
             material_conveying: {
-                small: {
-                    indoor: [
-                        { name: 'Portable Conveyor Belt', image: 'images/portable_conveyor_belt.jpg' },
-                    ],
-                    outdoor: [
-                        { name: 'Portable Conveyor Belt', image: 'images/portable_conveyor_belt.jpg' },
-                    ]
-                },
-                medium: {
-                    indoor: [],
-                    outdoor: [
-                        { name: 'Construction Dumper', image: 'images/construction_dumper.jpg' },
-                    ]
-                },
-                large: {
-                    indoor: [],
-                    outdoor: [
-                        { name: 'Telehandler', image: 'images/telehandler.jpg' },
-                    ]
-                }
+                horizontal: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                vertical: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                debris_removal: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                default: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } }
             },
             float_and_levelling: {
-                small: {
-                    indoor: [],
-                    outdoor: [
-                        { name: 'Power Trowel', image: 'images/power_trowel.jpg' }
-                    ]
-                },
-                medium: {
-                    indoor: [],
-                    outdoor: [
-                        { name: 'Ride-on Power Trowel', image: 'images/ride_on_power_trowel.jpg' }
-                    ]
-                },
-                large: {
-                    indoor: [],
-                    outdoor: [
-                        { name: 'Laser Screed', image: 'images/laser_screed.jpg' }
-                    ]
-                }
+                trowelling: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                screeding: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                self_levelling: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } },
+                default: { small: { indoor: [], outdoor: [] }, medium: { indoor: [], outdoor: [] }, large: { indoor: [], outdoor: [] } }
             }
         };
-        return recommendations[type][scale][location] || [];
+
+        if (recommendations[type] && recommendations[type][subType] && recommendations[type][subType][scale]) {
+            return recommendations[type][subType][scale][location] || [];
+        }
+        return [];
     }
 
     displayRecommendations(recommendations) {
@@ -277,9 +238,9 @@ class RecommendationAgent extends HTMLElement {
         const equipmentList = this.shadowRoot.getElementById('equipment-list');
 
         equipmentList.innerHTML = '';
-        if (recommendations.length === 0) {
+        if (!recommendations || recommendations.length === 0) {
             recommendationsDiv.style.display = 'block';
-            equipmentList.innerHTML = "No equipment recommendations for this combination. Please contact us for more information.";
+            equipmentList.innerHTML = "No equipment recommendations for this combination. Please ensure you have selected a sub-category or contact us for more information.";
             return;
         }
 
