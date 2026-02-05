@@ -50,7 +50,7 @@ class RecommendationAgent extends HTMLElement {
                     padding-top: 2rem;
                 }
 
-                h3 {
+                h3, h4 {
                     margin-top: 0;
                     color: var(--primary-color);
                 }
@@ -77,6 +77,21 @@ class RecommendationAgent extends HTMLElement {
                     object-fit: cover;
                     border-radius: 6px;
                     margin-bottom: 0.5rem;
+                }
+
+                .feedback-buttons {
+                    display: flex;
+                    gap: 1rem;
+                    margin-top: 1rem;
+                }
+
+                #feedback-yes, #feedback-no {
+                    width: auto;
+                    padding: 0.6rem 1.2rem;
+                }
+
+                #feedback-no {
+                    background-color: #6c757d;
                 }
             </style>
             <div class="agent-container">
@@ -112,6 +127,14 @@ class RecommendationAgent extends HTMLElement {
                 <div id="recommendations" class="recommendations" style="display: none;">
                     <h3>Recommended Equipment</h3>
                     <ul id="equipment-list"></ul>
+                    <div id="feedback-section" style="display: none; margin-top: 2rem;">
+                        <h4>Was this recommendation helpful?</h4>
+                        <div class="feedback-buttons">
+                            <button id="feedback-yes">Yes</button>
+                            <button id="feedback-no">No</button>
+                        </div>
+                        <p id="feedback-thanks" style="display: none; margin-top: 1rem;">Thanks for your feedback!</p>
+                    </div>
                 </div>
             </div>
         `;
@@ -178,6 +201,15 @@ class RecommendationAgent extends HTMLElement {
             const recommendations = this.getRecommendations(projectType, subCategory, projectScale, projectLocation);
             this.displayRecommendations(recommendations);
         });
+
+        this.shadowRoot.getElementById('feedback-yes').addEventListener('click', () => this.handleFeedback(true));
+        this.shadowRoot.getElementById('feedback-no').addEventListener('click', () => this.handleFeedback(false));
+    }
+
+    handleFeedback(isHelpful) {
+        console.log(`User feedback: ${isHelpful ? 'Helpful' : 'Not helpful'}`);
+        this.shadowRoot.querySelector('.feedback-buttons').style.display = 'none';
+        this.shadowRoot.getElementById('feedback-thanks').style.display = 'block';
     }
 
     getScaleFromArea(area) {
@@ -193,11 +225,11 @@ class RecommendationAgent extends HTMLElement {
     getRecommendations(type, subType, scale, location) {
         const recommendations = {
             surface_preparation: {
-                grinding: { small: { indoor: [{ name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }], outdoor: [{ name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }] }, medium: { indoor: [{ name: 'Floor Grinder', image: 'images/floor_grinder.jpg' }, { name: 'Dust Collector', image: 'images/dust_collector.jpg' }], outdoor: [{ name: 'Floor Grinder', image: 'images/floor_grinder.jpg' }] }, large: { indoor: [{ name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' }, { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }], outdoor: [{ name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' }] } },
-                stripping: { small: { indoor: [{ name: 'Floor Scraper', image: 'images/floor_scraper.jpg' }], outdoor: [{ name: 'Floor Scraper', image: 'images/floor_scraper.jpg' }] }, medium: { indoor: [{ name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }], outdoor: [{ name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }] }, large: { indoor: [{ name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }], outdoor: [{ name: 'Ride-on Scraper', image: 'images/ride_on_scraper.jpg' }] } },
+                grinding: { small: { indoor: [{ name: 'Hand Grinder', image: 'images/GRINDER - CTAG-007 .jpg' }], outdoor: [{ name: 'Hand Grinder', image: 'images/GRINDER - CTAG-007 .jpg' }] }, medium: { indoor: [{ name: 'Floor Grinder', image: 'images/FLOOR GRINDER - HTG-550.jpg' }, { name: 'Dust Collector', image: 'images/dust_collector.jpg' }], outdoor: [{ name: 'Floor Grinder', image: 'images/FLOOR GRINDER - HTG-550.jpg' }] }, large: { indoor: [{ name: 'Ride-on Floor Grinder', image: 'images/FLOOR GRINDER- HTG-680-4A.jpg' }, { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }], outdoor: [{ name: 'Ride-on Floor Grinder', image: 'images/FLOOR GRINDER- HTG-680-4A.jpg' }] } },
+                stripping: { small: { indoor: [{ name: 'Floor Scraper', image: 'images/SCARIFIER - CES 200D.jpg' }], outdoor: [{ name: 'Floor Scraper', image: 'images/SCARIFIER - CES 200D.jpg' }] }, medium: { indoor: [{ name: 'Ride-on Scraper', image: 'images/SCARIFIER - CS-320E.jpg' }], outdoor: [{ name: 'Ride-on Scraper', image: 'images/SCARIFIER - CS-320E.jpg' }] }, large: { indoor: [{ name: 'Ride-on Scraper', image: 'images/SCARIFIER - CS-320E.jpg' }], outdoor: [{ name: 'Ride-on Scraper', image: 'images/SCARIFIER - CS-320E.jpg' }] } },
                 cleaning: { small: { indoor: [{ name: 'Industrial Vacuum Cleaner', image: 'images/industrial_vacuum.jpg' }], outdoor: [{ name: 'Pressure Washer', image: 'images/pressure_washer.jpg' }] }, medium: { indoor: [{ name: 'Industrial Vacuum Cleaner', image: 'images/industrial_vacuum.jpg' }], outdoor: [{ name: 'Pressure Washer', image: 'images/pressure_washer.jpg' }] }, large: { indoor: [{ name: 'Ride-on Sweeper', image: 'images/ride_on_sweeper.jpg' }], outdoor: [{ name: 'Pressure Washer', image: 'images/pressure_washer.jpg' }] } },
-                shot_blasting: { small: { indoor: [], outdoor: [] }, medium: { indoor: [{ name: 'Shot Blaster', image: 'images/shot_blaster.jpg' }, { name: 'Dust Collector', image: 'images/dust_collector.jpg' }], outdoor: [{ name: 'Shot Blaster', image: 'images/shot_blaster.jpg' }] }, large: { indoor: [{ name: 'Large Shot Blaster', image: 'images/large_shot_blaster.jpg' }, { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }], outdoor: [{ name: 'Large Shot Blaster', image: 'images/large_shot_blaster.jpg' }] } },
-                default: { small: { indoor: [{ name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }], outdoor: [{ name: 'Hand Grinder', image: 'images/hand_grinder.jpg' }] }, medium: { indoor: [{ name: 'Floor Grinder', image: 'images/floor_grinder.jpg' }], outdoor: [{ name: 'Floor Grinder', image: 'images/floor_grinder.jpg' }] }, large: { indoor: [{ name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' }], outdoor: [{ name: 'Ride-on Floor Grinder', image: 'images/ride_on_floor_grinder.jpg' }] } }
+                shot_blasting: { small: { indoor: [], outdoor: [] }, medium: { indoor: [{ name: 'Shot Blaster', image: 'images/SHOT BLAST - CB1-10E7.jpg' }, { name: 'Dust Collector', image: 'images/dust_collector.jpg' }], outdoor: [{ name: 'Shot Blaster', image: 'images/SHOT BLAST - CB1-10E7.jpg' }] }, large: { indoor: [{ name: 'Large Shot Blaster', image: 'images/SHOT BLAST - CB1-10E7.jpg' }, { name: 'Large Dust Collector', image: 'images/large_dust_collector.jpg' }], outdoor: [{ name: 'Large Shot Blaster', image: 'images/SHOT BLAST - CB1-10E7.jpg' }] } },
+                default: { small: { indoor: [{ name: 'Hand Grinder', image: 'images/GRINDER - CTAG-007 .jpg' }], outdoor: [{ name: 'Hand Grinder', image: 'images/GRINDER - CTAG-007 .jpg' }] }, medium: { indoor: [{ name: 'Floor Grinder', image: 'images/FLOOR GRINDER - HTG-550.jpg' }], outdoor: [{ name: 'Floor Grinder', image: 'images/FLOOR GRINDER - HTG-550.jpg' }] }, large: { indoor: [{ name: 'Ride-on Floor Grinder', image: 'images/FLOOR GRINDER- HTG-680-4A.jpg' }], outdoor: [{ name: 'Ride-on Floor Grinder', image: 'images/FLOOR GRINDER- HTG-680-4A.jpg' }] } }
             },
             demolition: {
                 controlled: { small: { indoor: [{ name: 'Electric Breaker', image: 'images/electric_breaker.jpg' }], outdoor: [{ name: 'Electric Breaker', image: 'images/electric_breaker.jpg' }] }, medium: { indoor: [{ name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }], outdoor: [{ name: 'Mini Excavator', image: 'images/mini_excavator.jpg' }] }, large: { indoor: [{ name: 'Demolition Robot', image: 'images/demolition_robot.jpg' }], outdoor: [{ name: 'Mini Excavator', image: 'images/mini_excavator.jpg' }] } },
@@ -235,11 +267,13 @@ class RecommendationAgent extends HTMLElement {
     displayRecommendations(recommendations) {
         const recommendationsDiv = this.shadowRoot.getElementById('recommendations');
         const equipmentList = this.shadowRoot.getElementById('equipment-list');
+        const feedbackSection = this.shadowRoot.getElementById('feedback-section');
 
         equipmentList.innerHTML = '';
         if (!recommendations || recommendations.length === 0) {
             recommendationsDiv.style.display = 'block';
             equipmentList.innerHTML = "No equipment recommendations for this combination. Please ensure you have selected a sub-category or contact us for more information.";
+            feedbackSection.style.display = 'none';
             return;
         }
 
@@ -260,6 +294,9 @@ class RecommendationAgent extends HTMLElement {
         });
 
         recommendationsDiv.style.display = 'block';
+        feedbackSection.style.display = 'block';
+        this.shadowRoot.querySelector('.feedback-buttons').style.display = 'flex';
+        this.shadowRoot.getElementById('feedback-thanks').style.display = 'none';
     }
 }
 
