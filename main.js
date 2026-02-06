@@ -301,3 +301,39 @@ class RecommendationAgent extends HTMLElement {
 }
 
 customElements.define('recommendation-agent', RecommendationAgent);
+
+const feedbackForm = document.getElementById('feedback-form');
+const feedbackStatus = document.getElementById('feedback-status');
+
+feedbackForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(feedbackForm);
+    
+    try {
+        const response = await fetch(feedbackForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            feedbackStatus.textContent = 'Thanks for your feedback!';
+            feedbackStatus.style.color = 'green';
+            feedbackForm.reset();
+        } else {
+            const data = await response.json();
+            if (Object.hasOwn(data, 'errors')) {
+                feedbackStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+            } else {
+                feedbackStatus.textContent = 'Oops! There was a problem submitting your form';
+            }
+            feedbackStatus.style.color = 'red';
+        }
+    } catch (error) {
+        feedbackStatus.textContent = 'Oops! There was a problem submitting your form';
+        feedbackStatus.style.color = 'red';
+    }
+});
+

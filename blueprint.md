@@ -23,13 +23,14 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
     *   A display area for the agent's recommendations.
     *   **Image-Based Recommendations:** The recommended equipment is displayed in a grid of cards, with each card showing a picture of the equipment and its name.
     *   **User Feedback:** After a recommendation is displayed, the user is asked for feedback on the usability of the recommendation. The feedback is currently logged to the console for future analysis.
+*   **Feedback Form:** A feedback form is added to the page, allowing users to submit feedback via formspree.io.
 *   **Deployment:** Deployed the application to Firebase Hosting.
 
 ## Plan for Current Request
 
-### Implement User Feedback Mechanism
+### Add Feedback Form
 
-1.  **Add Feedback UI:** A new section with "Yes" and "No" buttons was added to the UI after the recommendations are displayed.
-2.  **Implement Feedback Logic:** JavaScript was added to show the feedback section and handle the user's response. The response is logged to the browser console.
-3.  **Update Styles:** CSS was added to ensure the new feedback section is visually consistent with the rest of the application.
-4.  **Update `blueprint.md`:** The project documentation has been updated to reflect the new feedback feature.
+1.  **Add Feedback Form to HTML:** Create a feedback form in `index.html` that `POST`s to `https://formspree.io/f/mpqjadpe`. The form will include fields for name, email, and message.
+2.  **Style the Form:** Add CSS rules to `style.css` to make the form visually consistent with the rest of the application.
+3.  **Handle Form Submission:** Add JavaScript code to `main.js` to handle the form submission. This will include showing a success or error message to the user after the form is submitted.
+4.  **Update `blueprint.md`:** The project documentation will be updated to reflect the new feedback form.
