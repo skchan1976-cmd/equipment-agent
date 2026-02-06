@@ -27,13 +27,12 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
     *   **Image-Based Recommendations:** The recommended equipment is displayed in a grid of cards, with each card showing a picture of the equipment and its name.
     *   **User Feedback:** After a recommendation is displayed, the user is asked for feedback on the usability of the recommendation. The feedback is currently logged to the console for future analysis.
 *   **Feedback Form:** A feedback form is added to the page, allowing users to submit feedback via formspree.io.
+*   **Google Analytics:** Added Google Analytics tracking to the application to monitor usage.
 *   **Deployment:** Deployed the application to Firebase Hosting.
 
 ## Plan for Current Request
 
-### Refactor Recommendation Data
+### Add Google Analytics
 
-1.  **Create `recommendations.js`:** Created a new file named `recommendations.js` to store the recommendation data separately as an ES module.
-2.  **Update `main.js`:** Modified `main.js` to import the recommendation data from `recommendations.js` and removed the hardcoded data.
-3.  **Update `index.html`:** Updated `index.html` to load `main.js` as a `type="module"` script to enable ES module imports.
-4.  **Update `blueprint.md`:** Updated the project documentation to reflect the refactored code structure.
+1.  **Add Google Analytics to HTML:** Added the Google Analytics gtag.js script to the `<head>` of `index.html`.
+2.  **Update `blueprint.md`:** Updated the project documentation to reflect the addition of Google Analytics.
