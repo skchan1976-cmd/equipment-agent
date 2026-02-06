@@ -13,13 +13,16 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
 *   **Background Image:** A background image of a construction equipment firm with a dark overlay to ensure text readability.
 *   **Header Logo:** The Teesin logo is displayed in the header.
 *   **Web Components:** The main application is built as a `<recommendation-agent>` custom element.
+*   **Modular JavaScript:** The code is organized into ES Modules.
+    *   `main.js`: Contains the core application logic and the `RecommendationAgent` web component.
+    *   `recommendations.js`: Exports the equipment recommendation data, separating data from logic for better maintainability.
 *   **Functionality:**
     *   A form to collect project details.
     *   Users input the project type from a dropdown menu.
     *   **Dynamic Sub-Categories:** For more detailed recommendations, a "Sub-Category" dropdown appears based on the selected "Project Type".
     *   Users input the project area in square meters.
     *   The agent determines the project scale (small, medium, or large) based on the area.
-    *   **Populated Recommendation Engine:** The recommendation engine is populated with equipment data extracted from **www.teesin.com.sg** for all sub-categories.
+    *   **Populated Recommendation Engine:** The recommendation engine is populated with equipment data for all sub-categories.
     *   A display area for the agent's recommendations.
     *   **Image-Based Recommendations:** The recommended equipment is displayed in a grid of cards, with each card showing a picture of the equipment and its name.
     *   **User Feedback:** After a recommendation is displayed, the user is asked for feedback on the usability of the recommendation. The feedback is currently logged to the console for future analysis.
@@ -28,9 +31,9 @@ This application is a web-based tool that acts as a "Teesin Equipment Recommenda
 
 ## Plan for Current Request
 
-### Add Feedback Form
+### Refactor Recommendation Data
 
-1.  **Add Feedback Form to HTML:** Create a feedback form in `index.html` that `POST`s to `https://formspree.io/f/mpqjadpe`. The form will include fields for name, email, and message.
-2.  **Style the Form:** Add CSS rules to `style.css` to make the form visually consistent with the rest of the application.
-3.  **Handle Form Submission:** Add JavaScript code to `main.js` to handle the form submission. This will include showing a success or error message to the user after the form is submitted.
-4.  **Update `blueprint.md`:** The project documentation will be updated to reflect the new feedback form.
+1.  **Create `recommendations.js`:** Created a new file named `recommendations.js` to store the recommendation data separately as an ES module.
+2.  **Update `main.js`:** Modified `main.js` to import the recommendation data from `recommendations.js` and removed the hardcoded data.
+3.  **Update `index.html`:** Updated `index.html` to load `main.js` as a `type="module"` script to enable ES module imports.
+4.  **Update `blueprint.md`:** Updated the project documentation to reflect the refactored code structure.
